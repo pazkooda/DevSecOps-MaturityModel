@@ -38,6 +38,8 @@ strings:
       [
         'Level 1: Foundational',
         'Level 2: Managed',
+        'Level 3: Optimized',
+        'Level 4: Leading',
       ]
     labels: ['Very Low', 'Low', 'Medium', 'High', 'Very High']
     knowledgeLabels:

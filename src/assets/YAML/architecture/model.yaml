@@ -7,34 +7,397 @@ meta:
 Resilience:
   Availability:
     Defined recovery objectives:
-      uuid: a0000001-0001-0001-0001-000000000001
-      risk: Without defined recovery objectives, restoration priorities are unclear during an outage.
-      measure: Define Recovery Time Objective (RTO) and Recovery Point Objective (RPO) for critical services.
-      difficultyOfImplementation:
-        knowledge: 2
-        time: 2
-        resources: 1
+      uuid: a0010001-0001-0001-0001-000000000001
+      risk: Restoration priorities unclear during outage.
+      measure: Define RTO and RPO for critical services.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 1 }
       usefulness: 4
       level: 1
       isImplemented: false
       evidence: ""
       comments: ""
-      tags:
-        - none
     Automated failover:
-      uuid: a0000001-0001-0001-0001-000000000002
-      risk: Manual failover is slow and error-prone, extending downtime.
-      measure: Implement automated failover for critical services using health checks and orchestration.
-      difficultyOfImplementation:
-        knowledge: 3
-        time: 3
-        resources: 3
+      uuid: a0010001-0001-0001-0001-000000000002
+      risk: Manual failover extends downtime.
+      measure: Implement automated failover with health checks.
+      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 2 }
       usefulness: 4
       level: 2
-      dependsOn:
-        - a0000001-0001-0001-0001-000000000001
       isImplemented: false
       evidence: ""
       comments: ""
-      tags:
-        - none
+    Multi-region deployment:
+      uuid: a0010001-0001-0001-0001-000000000003
+      risk: Single region failure causes total outage.
+      measure: Deploy services across multiple regions.
+      difficultyOfImplementation: { knowledge: 3, time: 4, resources: 3 }
+      usefulness: 4
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Chaos engineering:
+      uuid: a0010001-0001-0001-0001-000000000004
+      risk: Unknown failure modes remain untested.
+      measure: Run chaos experiments to validate resilience.
+      difficultyOfImplementation: { knowledge: 4, time: 3, resources: 3 }
+      usefulness: 4
+      level: 4
+      isImplemented: false
+      evidence: ""
+      comments: ""
+  Disaster Recovery:
+    Documented DR plan:
+      uuid: a0010002-0001-0001-0001-000000000001
+      risk: Ad-hoc recovery without a plan.
+      measure: Create and maintain a disaster recovery plan.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 1 }
+      usefulness: 3
+      level: 1
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Regular DR drills:
+      uuid: a0010002-0001-0001-0001-000000000002
+      risk: Untested plans may fail in practice.
+      measure: Conduct DR drills at least annually.
+      difficultyOfImplementation: { knowledge: 2, time: 3, resources: 2 }
+      usefulness: 4
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Automated DR orchestration:
+      uuid: a0010002-0001-0001-0001-000000000003
+      risk: Manual DR steps are slow and error-prone.
+      measure: Automate DR failover and failback procedures.
+      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 3 }
+      usefulness: 4
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Continuous DR validation:
+      uuid: a0010002-0001-0001-0001-000000000004
+      risk: DR readiness degrades over time.
+      measure: Continuously validate DR readiness in production.
+      difficultyOfImplementation: { knowledge: 4, time: 4, resources: 3 }
+      usefulness: 4
+      level: 4
+      isImplemented: false
+      evidence: ""
+      comments: ""
+Observability:
+  Monitoring:
+    Basic health checks:
+      uuid: a0020001-0001-0001-0001-000000000001
+      risk: Failures go undetected without health checks.
+      measure: Implement health check endpoints for all services.
+      difficultyOfImplementation: { knowledge: 1, time: 1, resources: 1 }
+      usefulness: 4
+      level: 1
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Centralized dashboards:
+      uuid: a0020001-0001-0001-0001-000000000002
+      risk: Scattered metrics slow down incident response.
+      measure: Aggregate metrics into centralized dashboards.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 2 }
+      usefulness: 3
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Distributed tracing:
+      uuid: a0020001-0001-0001-0001-000000000003
+      risk: Cannot trace requests across services.
+      measure: Implement distributed tracing across all services.
+      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 2 }
+      usefulness: 4
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Anomaly detection:
+      uuid: a0020001-0001-0001-0001-000000000004
+      risk: Subtle degradations go unnoticed.
+      measure: Deploy ML-based anomaly detection on metrics.
+      difficultyOfImplementation: { knowledge: 4, time: 3, resources: 3 }
+      usefulness: 3
+      level: 4
+      isImplemented: false
+      evidence: ""
+      comments: ""
+  Alerting:
+    Threshold-based alerts:
+      uuid: a0020002-0001-0001-0001-000000000001
+      risk: Issues not escalated without alerting.
+      measure: Configure threshold-based alerts for key metrics.
+      difficultyOfImplementation: { knowledge: 2, time: 1, resources: 1 }
+      usefulness: 4
+      level: 1
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    On-call rotation:
+      uuid: a0020002-0001-0001-0001-000000000002
+      risk: No clear ownership during incidents.
+      measure: Establish on-call rotation with escalation paths.
+      difficultyOfImplementation: { knowledge: 1, time: 2, resources: 2 }
+      usefulness: 3
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    SLO-based alerting:
+      uuid: a0020002-0001-0001-0001-000000000003
+      risk: Too many alerts cause fatigue.
+      measure: Alert on SLO burn rate instead of raw thresholds.
+      difficultyOfImplementation: { knowledge: 3, time: 2, resources: 2 }
+      usefulness: 4
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Self-healing automation:
+      uuid: a0020002-0001-0001-0001-000000000004
+      risk: Human response is too slow for some failures.
+      measure: Implement automated remediation for known failure patterns.
+      difficultyOfImplementation: { knowledge: 4, time: 4, resources: 3 }
+      usefulness: 4
+      level: 4
+      isImplemented: false
+      evidence: ""
+      comments: ""
+Scalability:
+  Horizontal Scaling:
+    Stateless service design:
+      uuid: a0030001-0001-0001-0001-000000000001
+      risk: Stateful services block horizontal scaling.
+      measure: Design services to be stateless.
+      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 1 }
+      usefulness: 4
+      level: 1
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Auto-scaling policies:
+      uuid: a0030001-0001-0001-0001-000000000002
+      risk: Manual scaling cannot react to traffic spikes.
+      measure: Define auto-scaling policies based on load metrics.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 2 }
+      usefulness: 4
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Predictive scaling:
+      uuid: a0030001-0001-0001-0001-000000000003
+      risk: Reactive scaling is too slow for traffic bursts.
+      measure: Use predictive scaling based on historical patterns.
+      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 3 }
+      usefulness: 3
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Global load balancing:
+      uuid: a0030001-0001-0001-0001-000000000004
+      risk: Regional load balancing limits global reach.
+      measure: Implement global load balancing across regions.
+      difficultyOfImplementation: { knowledge: 4, time: 4, resources: 4 }
+      usefulness: 3
+      level: 4
+      isImplemented: false
+      evidence: ""
+      comments: ""
+  Data Partitioning:
+    Database sharding strategy:
+      uuid: a0030002-0001-0001-0001-000000000001
+      risk: Single database becomes a bottleneck.
+      measure: Define a sharding or partitioning strategy.
+      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 2 }
+      usefulness: 3
+      level: 1
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Read replicas:
+      uuid: a0030002-0001-0001-0001-000000000002
+      risk: Read-heavy workloads overload primary database.
+      measure: Deploy read replicas for read-heavy workloads.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 2 }
+      usefulness: 3
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Event-driven data sync:
+      uuid: a0030002-0001-0001-0001-000000000003
+      risk: Synchronous replication limits throughput.
+      measure: Use event-driven patterns for cross-partition data sync.
+      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 3 }
+      usefulness: 3
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Multi-model data stores:
+      uuid: a0030002-0001-0001-0001-000000000004
+      risk: One data model does not fit all access patterns.
+      measure: Use polyglot persistence with purpose-fit data stores.
+      difficultyOfImplementation: { knowledge: 4, time: 4, resources: 3 }
+      usefulness: 3
+      level: 4
+      isImplemented: false
+      evidence: ""
+      comments: ""
+Modularity:
+  Service Boundaries:
+    Defined bounded contexts:
+      uuid: a0040001-0001-0001-0001-000000000001
+      risk: Unclear boundaries lead to tight coupling.
+      measure: Define bounded contexts for each service.
+      difficultyOfImplementation: { knowledge: 3, time: 2, resources: 1 }
+      usefulness: 4
+      level: 1
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    API contracts:
+      uuid: a0040001-0001-0001-0001-000000000002
+      risk: Breaking changes disrupt consumers.
+      measure: Publish versioned API contracts for all services.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 1 }
+      usefulness: 4
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Contract testing:
+      uuid: a0040001-0001-0001-0001-000000000003
+      risk: Contract violations detected too late.
+      measure: Implement consumer-driven contract testing.
+      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 2 }
+      usefulness: 4
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    # Level 4 intentionally missing — grayed out
+  Dependency Management:
+    Dependency inventory:
+      uuid: a0040002-0001-0001-0001-000000000001
+      risk: Unknown dependencies cause cascading failures.
+      measure: Maintain an inventory of service dependencies.
+      difficultyOfImplementation: { knowledge: 1, time: 1, resources: 1 }
+      usefulness: 3
+      level: 1
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Circuit breakers:
+      uuid: a0040002-0001-0001-0001-000000000002
+      risk: Failures propagate across services.
+      measure: Implement circuit breakers for inter-service calls.
+      difficultyOfImplementation: { knowledge: 3, time: 2, resources: 2 }
+      usefulness: 4
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Bulkhead isolation:
+      uuid: a0040002-0001-0001-0001-000000000003
+      risk: One failing dependency exhausts shared resources.
+      measure: Isolate dependencies using bulkhead patterns.
+      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 2 }
+      usefulness: 4
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Service mesh:
+      uuid: a0040002-0001-0001-0001-000000000004
+      risk: Cross-cutting concerns duplicated in each service.
+      measure: Deploy a service mesh for traffic management.
+      difficultyOfImplementation: { knowledge: 4, time: 4, resources: 3 }
+      usefulness: 3
+      level: 4
+      isImplemented: false
+      evidence: ""
+      comments: ""
+Compliance:
+  Standards:
+    Regulatory mapping:
+      uuid: a0050001-0001-0001-0001-000000000001
+      risk: Non-compliance with regulations.
+      measure: Map architecture decisions to regulatory requirements.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 1 }
+      usefulness: 3
+      level: 1
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Architecture decision records:
+      uuid: a0050001-0001-0001-0001-000000000002
+      risk: Decisions are lost without documentation.
+      measure: Maintain ADRs for significant architecture decisions.
+      difficultyOfImplementation: { knowledge: 1, time: 1, resources: 1 }
+      usefulness: 4
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    # Level 3 intentionally missing — grayed out
+    Compliance as code:
+      uuid: a0050001-0001-0001-0001-000000000004
+      risk: Manual compliance checks are slow and inconsistent.
+      measure: Encode compliance rules as automated policy checks.
+      difficultyOfImplementation: { knowledge: 4, time: 3, resources: 2 }
+      usefulness: 4
+      level: 4
+      isImplemented: false
+      evidence: ""
+      comments: ""
+  Audit:
+    Audit trail for changes:
+      uuid: a0050002-0001-0001-0001-000000000001
+      risk: Changes cannot be traced back.
+      measure: Log all infrastructure and config changes.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 2 }
+      usefulness: 3
+      level: 1
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Periodic architecture review:
+      uuid: a0050002-0001-0001-0001-000000000002
+      risk: Architecture drifts from intended design.
+      measure: Conduct periodic architecture reviews.
+      difficultyOfImplementation: { knowledge: 2, time: 3, resources: 1 }
+      usefulness: 3
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Automated drift detection:
+      uuid: a0050002-0001-0001-0001-000000000003
+      risk: Manual reviews miss configuration drift.
+      measure: Detect infrastructure drift automatically.
+      difficultyOfImplementation: { knowledge: 3, time: 2, resources: 2 }
+      usefulness: 4
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
+    Continuous compliance monitoring:
+      uuid: a0050002-0001-0001-0001-000000000004
+      risk: Point-in-time audits miss ongoing violations.
+      measure: Monitor compliance continuously in production.
+      difficultyOfImplementation: { knowledge: 4, time: 3, resources: 3 }
+      usefulness: 4
+      level: 4
+      isImplemented: false
+      evidence: ""
+      comments: ""
