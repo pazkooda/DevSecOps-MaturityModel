@@ -30,7 +30,7 @@ export class MissingModelError extends Error {
 
 @Injectable({ providedIn: 'root' })
 export class LoaderService {
-  private metaFile: string = 'assets/YAML/security/meta.yaml';
+  private metaFile: string;
   private DSOMM_MODEL_URL: string;
   private debug: boolean = false;
   private dataStore: DataStore | null = null;
@@ -41,6 +41,16 @@ export class LoaderService {
     private notificationService: NotificationService
   ) {
     this.DSOMM_MODEL_URL = this.githubService.getDsommModelUrl() + '/tree/main/generated';
+    this.metaFile = LoaderService.resolveMetaFile();
+  }
+
+  /** Resolve the meta file path synchronously from localStorage + domains config fallback */
+  private static resolveMetaFile(): string {
+    const storedDomain = localStorage.getItem('activeDomainId');
+    if (storedDomain) {
+      return `assets/YAML/${storedDomain}/meta.yaml`;
+    }
+    return 'assets/YAML/security/meta.yaml';
   }
 
   get datastore(): DataStore | null {
