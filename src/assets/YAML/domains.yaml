@@ -2,7 +2,9 @@ domains:
   - id: security
     name: Security
     metaFile: security/meta.yaml
+    theme: green
   - id: architecture
     name: Architecture
     metaFile: architecture/meta.yaml
+    theme: purple
 defaultDomain: security
