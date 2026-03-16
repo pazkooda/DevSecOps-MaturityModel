@@ -208,8 +208,14 @@ export class YamlService {
     return [file, yPath];
   }
 
+  private static readonly SHARED_REFS = ['assets/YAML/teams.yaml'];
+
   public makeFullPath(relativePath: string, relativeTo: string) {
     let fullPath = new URL(relativePath, 'https://example.org/' + relativeTo).pathname?.slice(1);
+
+    if (YamlService.SHARED_REFS.includes(fullPath)) {
+      return fullPath;
+    }
 
     // Make sure the new path does not escape its cage
     let i = relativeTo.lastIndexOf('/');

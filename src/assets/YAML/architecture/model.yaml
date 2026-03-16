@@ -16,6 +16,7 @@ Resilience:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [planning, reliability]
     Automated failover:
       uuid: a0010001-0001-0001-0001-000000000002
       risk: Manual failover extends downtime.
@@ -26,6 +27,7 @@ Resilience:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [automation, reliability]
     Multi-region deployment:
       uuid: a0010001-0001-0001-0001-000000000003
       risk: Single region failure causes total outage.
@@ -36,6 +38,7 @@ Resilience:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [infrastructure, reliability]
     Chaos engineering:
       uuid: a0010001-0001-0001-0001-000000000004
       risk: Unknown failure modes remain untested.
@@ -46,6 +49,7 @@ Resilience:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [testing, reliability]
   Disaster Recovery:
     Documented DR plan:
       uuid: a0010002-0001-0001-0001-000000000001
@@ -57,6 +61,7 @@ Resilience:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [planning, documentation]
     Regular DR drills:
       uuid: a0010002-0001-0001-0001-000000000002
       risk: Untested plans may fail in practice.
@@ -67,6 +72,7 @@ Resilience:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [testing, process]
     Automated DR orchestration:
       uuid: a0010002-0001-0001-0001-000000000003
       risk: Manual DR steps are slow and error-prone.
@@ -77,6 +83,7 @@ Resilience:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [automation, reliability]
     Continuous DR validation:
       uuid: a0010002-0001-0001-0001-000000000004
       risk: DR readiness degrades over time.
@@ -87,6 +94,7 @@ Resilience:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [testing, automation]
 Observability:
   Monitoring:
     Basic health checks:
@@ -99,6 +107,7 @@ Observability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [monitoring, reliability]
     Centralized dashboards:
       uuid: a0020001-0001-0001-0001-000000000002
       risk: Scattered metrics slow down incident response.
@@ -109,6 +118,7 @@ Observability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [monitoring, tooling]
     Distributed tracing:
       uuid: a0020001-0001-0001-0001-000000000003
       risk: Cannot trace requests across services.
@@ -119,6 +129,7 @@ Observability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [monitoring, tooling]
     Anomaly detection:
       uuid: a0020001-0001-0001-0001-000000000004
       risk: Subtle degradations go unnoticed.
@@ -129,6 +140,7 @@ Observability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [monitoring, automation]
   Alerting:
     Threshold-based alerts:
       uuid: a0020002-0001-0001-0001-000000000001
@@ -140,6 +152,7 @@ Observability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [monitoring, process]
     On-call rotation:
       uuid: a0020002-0001-0001-0001-000000000002
       risk: No clear ownership during incidents.
@@ -150,6 +163,7 @@ Observability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [process, culture]
     SLO-based alerting:
       uuid: a0020002-0001-0001-0001-000000000003
       risk: Too many alerts cause fatigue.
@@ -160,6 +174,7 @@ Observability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [monitoring, reliability]
     Self-healing automation:
       uuid: a0020002-0001-0001-0001-000000000004
       risk: Human response is too slow for some failures.
@@ -170,6 +185,7 @@ Observability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [automation, reliability]
 Scalability:
   Horizontal Scaling:
     Stateless service design:
@@ -182,6 +198,7 @@ Scalability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [design, infrastructure]
     Auto-scaling policies:
       uuid: a0030001-0001-0001-0001-000000000002
       risk: Manual scaling cannot react to traffic spikes.
@@ -192,6 +209,7 @@ Scalability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [automation, infrastructure]
     Predictive scaling:
       uuid: a0030001-0001-0001-0001-000000000003
       risk: Reactive scaling is too slow for traffic bursts.
@@ -202,6 +220,7 @@ Scalability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [automation, infrastructure]
     Global load balancing:
       uuid: a0030001-0001-0001-0001-000000000004
       risk: Regional load balancing limits global reach.
@@ -212,6 +231,7 @@ Scalability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [infrastructure, reliability]
   Data Partitioning:
     Database sharding strategy:
       uuid: a0030002-0001-0001-0001-000000000001
@@ -223,6 +243,7 @@ Scalability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [design, data]
     Read replicas:
       uuid: a0030002-0001-0001-0001-000000000002
       risk: Read-heavy workloads overload primary database.
@@ -233,6 +254,7 @@ Scalability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [infrastructure, data]
     Event-driven data sync:
       uuid: a0030002-0001-0001-0001-000000000003
       risk: Synchronous replication limits throughput.
@@ -243,6 +265,7 @@ Scalability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [design, data]
     Multi-model data stores:
       uuid: a0030002-0001-0001-0001-000000000004
       risk: One data model does not fit all access patterns.
@@ -253,6 +276,7 @@ Scalability:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [design, data]
 Modularity:
   Service Boundaries:
     Defined bounded contexts:
@@ -265,6 +289,7 @@ Modularity:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [design, planning]
     API contracts:
       uuid: a0040001-0001-0001-0001-000000000002
       risk: Breaking changes disrupt consumers.
@@ -275,6 +300,7 @@ Modularity:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [design, documentation]
     Contract testing:
       uuid: a0040001-0001-0001-0001-000000000003
       risk: Contract violations detected too late.
@@ -285,6 +311,7 @@ Modularity:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [testing, design]
     # Level 4 intentionally missing — grayed out
   Dependency Management:
     Dependency inventory:
@@ -297,6 +324,7 @@ Modularity:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [documentation, planning]
     Circuit breakers:
       uuid: a0040002-0001-0001-0001-000000000002
       risk: Failures propagate across services.
@@ -307,6 +335,7 @@ Modularity:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [design, reliability]
     Bulkhead isolation:
       uuid: a0040002-0001-0001-0001-000000000003
       risk: One failing dependency exhausts shared resources.
@@ -317,6 +346,7 @@ Modularity:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [design, reliability]
     Service mesh:
       uuid: a0040002-0001-0001-0001-000000000004
       risk: Cross-cutting concerns duplicated in each service.
@@ -327,6 +357,7 @@ Modularity:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [infrastructure, tooling]
 Compliance:
   Standards:
     Regulatory mapping:
@@ -339,6 +370,7 @@ Compliance:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [planning, documentation]
     Architecture decision records:
       uuid: a0050001-0001-0001-0001-000000000002
       risk: Decisions are lost without documentation.
@@ -349,6 +381,7 @@ Compliance:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [documentation, process]
     # Level 3 intentionally missing — grayed out
     Compliance as code:
       uuid: a0050001-0001-0001-0001-000000000004
@@ -360,6 +393,7 @@ Compliance:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [automation, tooling]
   Audit:
     Audit trail for changes:
       uuid: a0050002-0001-0001-0001-000000000001
@@ -371,6 +405,7 @@ Compliance:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [monitoring, documentation]
     Periodic architecture review:
       uuid: a0050002-0001-0001-0001-000000000002
       risk: Architecture drifts from intended design.
@@ -381,6 +416,7 @@ Compliance:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [process, planning]
     Automated drift detection:
       uuid: a0050002-0001-0001-0001-000000000003
       risk: Manual reviews miss configuration drift.
@@ -391,6 +427,7 @@ Compliance:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [automation, monitoring]
     Continuous compliance monitoring:
       uuid: a0050002-0001-0001-0001-000000000004
       risk: Point-in-time audits miss ongoing violations.
@@ -401,3 +438,4 @@ Compliance:
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [automation, monitoring]
