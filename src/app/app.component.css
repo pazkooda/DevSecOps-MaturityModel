@@ -58,9 +58,14 @@
   background: rgba(0,0,0,0.04);
   transform: scale(1.05);
 }
-.domain-tabs {
+.domain-select {
   margin-left: 12px;
-  font-size: 0.8em;
+  width: 140px;
+  font-size: 0.85em;
+  padding: 6px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  background: transparent;
 }
 .spacer {
   flex: 1 1 auto;
