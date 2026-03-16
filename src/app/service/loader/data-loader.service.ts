@@ -30,7 +30,7 @@ export class MissingModelError extends Error {
 
 @Injectable({ providedIn: 'root' })
 export class LoaderService {
-  private META_FILE: string = 'assets/YAML/meta.yaml';
+  private metaFile: string = 'assets/YAML/security/meta.yaml';
   private DSOMM_MODEL_URL: string;
   private debug: boolean = false;
   private dataStore: DataStore | null = null;
@@ -45,6 +45,13 @@ export class LoaderService {
 
   get datastore(): DataStore | null {
     return this.dataStore;
+  }
+
+  public setMetaFile(metaFile: string): void {
+    if (metaFile !== this.metaFile) {
+      this.metaFile = metaFile;
+      this.dataStore = null; // Force reload on next load()
+    }
   }
 
   public async load(): Promise<DataStore> {
@@ -90,7 +97,7 @@ export class LoaderService {
     } catch (err: any) {
       if (err instanceof FileNotFoundError) {
         console.error(`${perfNow()}: Missing model file: ${err?.filename || err}`);
-        if (err.filename && err.filename.endsWith('default/model.yaml')) {
+        if (err.filename && err.filename.endsWith('model.yaml')) {
           let msg: string =
             `No DSOMM Model file found.\n\n` +
             `Please download \`model.yaml\` from [DSOMM-data](${this.DSOMM_MODEL_URL}) on GitHub, \\\n` +
@@ -108,10 +115,10 @@ export class LoaderService {
 
   private async loadMeta(): Promise<MetaStore> {
     if (this.debug) {
-      console.log(`${perfNow()}: Load meta: ${this.META_FILE}`);
+      console.log(`${perfNow()}: Load meta: ${this.metaFile}`);
     }
     const meta: MetaStore = new MetaStore();
-    meta.init(await this.yamlService.loadYamlWithReferencesResolved(this.META_FILE));
+    meta.init(await this.yamlService.loadYamlWithReferencesResolved(this.metaFile));
     meta.loadTeamsAndGroups();
 
     if (!meta.activityFiles) {
@@ -130,9 +137,9 @@ export class LoaderService {
     });
 
     // Resolve paths relative to meta.yaml
-    meta.teamProgressFile = this.yamlService.makeFullPath(meta.teamProgressFile, this.META_FILE);
+    meta.teamProgressFile = this.yamlService.makeFullPath(meta.teamProgressFile, this.metaFile);
     meta.activityFiles = meta.activityFiles.map(file =>
-      this.yamlService.makeFullPath(file, this.META_FILE)
+      this.yamlService.makeFullPath(file, this.metaFile)
     );
 
     if (this.debug) console.log(`${perfNow()} s: meta loaded`);
@@ -209,6 +216,7 @@ export class LoaderService {
   }
 
   public forceReload(): Promise<DataStore> {
+    this.dataStore = null;
     return this.load();
   }
 

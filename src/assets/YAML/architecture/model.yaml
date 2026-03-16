@@ -1,0 +1,40 @@
+---
+meta:
+  version: 0.1.0
+  released: "2026-03-16"
+  publisher: https://github.com/devsecopsmaturitymodel/DevSecOps-MaturityModel
+---
+Resilience:
+  Availability:
+    Defined recovery objectives:
+      uuid: a0000001-0001-0001-0001-000000000001
+      risk: Without defined recovery objectives, restoration priorities are unclear during an outage.
+      measure: Define Recovery Time Objective (RTO) and Recovery Point Objective (RPO) for critical services.
+      difficultyOfImplementation:
+        knowledge: 2
+        time: 2
+        resources: 1
+      usefulness: 4
+      level: 1
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags:
+        - none
+    Automated failover:
+      uuid: a0000001-0001-0001-0001-000000000002
+      risk: Manual failover is slow and error-prone, extending downtime.
+      measure: Implement automated failover for critical services using health checks and orchestration.
+      difficultyOfImplementation:
+        knowledge: 3
+        time: 3
+        resources: 3
+      usefulness: 4
+      level: 2
+      dependsOn:
+        - a0000001-0001-0001-0001-000000000001
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags:
+        - none

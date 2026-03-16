@@ -1,0 +1,8 @@
+domains:
+  - id: security
+    name: Security
+    metaFile: security/meta.yaml
+  - id: architecture
+    name: Architecture
+    metaFile: architecture/meta.yaml
+defaultDomain: security

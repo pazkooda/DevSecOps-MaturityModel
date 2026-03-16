@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { ThemeService } from './service/theme.service';
 import { TitleService } from './service/title.service';
+import { DomainService, Domain } from './service/domain.service';
+import { LoaderService } from './service/loader/data-loader.service';
 
 @Component({
   selector: 'app-root',
@@ -15,13 +17,21 @@ export class AppComponent implements OnInit, OnDestroy {
   menuIsOpen: boolean = true;
   sidenavWidth: string = '250px';
 
+  domains: Domain[] = [];
+  activeDomainId: string = '';
+
   private destroy$ = new Subject<void>();
 
-  constructor(private themeService: ThemeService, private titleService: TitleService) {
+  constructor(
+    private themeService: ThemeService,
+    private titleService: TitleService,
+    private domainService: DomainService,
+    private loaderService: LoaderService
+  ) {
     this.themeService.initTheme();
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     let menuState: string | null = localStorage.getItem('state.menuIsOpen');
     if (menuState === 'false') {
       setTimeout(() => {
@@ -32,11 +42,16 @@ export class AppComponent implements OnInit, OnDestroy {
       this.sidenavWidth = '250px';
     }
 
-    // Subscribe to title changes
     this.titleService.titleInfo$.pipe(takeUntil(this.destroy$)).subscribe(titleInfo => {
       this.title = titleInfo?.dimension || '';
       this.subtitle = titleInfo?.level ? 'Level ' + titleInfo?.level : '';
     });
+
+    // Load domains and set initial meta file
+    const initial = await this.domainService.load();
+    this.domains = this.domainService.domains;
+    this.activeDomainId = initial.id;
+    this.loaderService.setMetaFile(this.domainService.getMetaFilePath());
   }
 
   ngOnDestroy(): void {
@@ -48,5 +63,13 @@ export class AppComponent implements OnInit, OnDestroy {
     this.menuIsOpen = !this.menuIsOpen;
     this.sidenavWidth = this.menuIsOpen ? '250px' : '0px';
     localStorage.setItem('state.menuIsOpen', this.menuIsOpen.toString());
+  }
+
+  onDomainChange(domainId: string): void {
+    this.domainService.switchDomain(domainId);
+    this.activeDomainId = domainId;
+    this.loaderService.setMetaFile(this.domainService.getMetaFilePath());
+    // Full reload to ensure all pages pick up the new DataStore
+    window.location.href = '/';
   }
 }
