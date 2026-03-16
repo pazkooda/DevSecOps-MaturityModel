@@ -49,6 +49,14 @@
             <mat-form-field>
               <mat-label>Team Filter</mat-label>
               <mat-chip-list selectable multiple>
+                <mat-checkbox
+                  class="select-all-teams"
+                  color="primary"
+                  [checked]="allTeamsSelected"
+                  [indeterminate]="someTeamsSelected"
+                  (change)="toggleAllTeams($event.checked)"
+                  >All</mat-checkbox
+                >
                 <mat-chip
                   #chip="matChip"
                   *ngFor="let team of filtersTeams | keyvalue"

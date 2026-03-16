@@ -161,6 +161,17 @@ mat-chip {
   cursor: pointer;
 }
 
+.select-all-teams {
+  margin-right: 12px;
+  padding-right: 12px;
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+  align-self: center;
+}
+
+:host-context(.dark-theme) .select-all-teams {
+  border-right-color: rgba(255, 255, 255, 0.12);
+}
+
 button.filter-toggle {
   position: absolute;
   top: 2px;
