@@ -90,8 +90,8 @@ export class LoaderService {
       this.dataStore.progressStore?.setActivityMap(activityMap);
 
       // Load the progress for each team's activities
-      let teamProgress: TeamProgressFile = await this.loadTeamProgress(this.dataStore.meta);
-      this.dataStore.addProgressData(teamProgress.progress);
+      let teamProgress: TeamProgressFile = await this.loadTeamProgress(this.dataStore.meta) || { progress: {} };
+      this.dataStore.addProgressData(teamProgress.progress || {});
       let browserProgress: TeamProgressFile | null =
         this.dataStore.progressStore?.retrieveStoredTeamProgress() || null;
       if (browserProgress == null) {
@@ -117,7 +117,13 @@ export class LoaderService {
           this.notificationService.notify('Loading error', err.message + ': ' + err.filename);
         }
       } else {
-        this.notificationService.notify('Error', 'Failed to load data: \n\n' + err);
+        let msg = 'Failed to load data.';
+        if (err instanceof TypeError) {
+          msg += `\n\nA data file may be empty or malformed. Check that team-progress.yaml and model.yaml contain valid YAML content.`;
+        } else {
+          msg += '\n\n' + err;
+        }
+        this.notificationService.notify('Error', msg);
       }
       return this.dataStore;
     }
