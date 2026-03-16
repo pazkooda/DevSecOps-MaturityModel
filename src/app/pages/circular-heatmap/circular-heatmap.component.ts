@@ -230,6 +230,24 @@ export class CircularHeatmapComponent implements OnInit, OnDestroy {
     }
   }
 
+  get allTeamsSelected(): boolean {
+    const vals = Object.values(this.filtersTeams);
+    return vals.length > 0 && vals.every(v => v);
+  }
+
+  get someTeamsSelected(): boolean {
+    const vals = Object.values(this.filtersTeams);
+    return vals.some(v => v) && !vals.every(v => v);
+  }
+
+  toggleAllTeams(checked: boolean): void {
+    Object.keys(this.filtersTeams).forEach(k => (this.filtersTeams[k] = checked));
+    this.hasTeamsFilter = checked;
+    const selectedTeams = checked ? Object.keys(this.filtersTeams) : [];
+    this.sectorService.setVisibleTeams(selectedTeams);
+    this.reColorHeatmap();
+  }
+
   toggleTeamFilter(chip: MatChip) {
     chip.toggleSelected();
     this.filtersTeams[chip.value.trim()] = chip.selected;
