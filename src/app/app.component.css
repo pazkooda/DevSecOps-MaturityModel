@@ -58,6 +58,10 @@
   background: rgba(0,0,0,0.04);
   transform: scale(1.05);
 }
+.domain-tabs {
+  margin-left: 12px;
+  font-size: 0.8em;
+}
 .spacer {
   flex: 1 1 auto;
 }

@@ -5,6 +5,17 @@
   <a routerLink="/" class="logo">
     <app-logo class="logo-icon"></app-logo>
   </a>
+  <mat-button-toggle-group
+    class="domain-tabs"
+    [value]="activeDomainId"
+    (change)="onDomainChange($event.value)"
+    *ngIf="domains.length > 1"
+  >
+    <mat-button-toggle
+      *ngFor="let d of domains"
+      [value]="d.id"
+    >{{ d.name }}</mat-button-toggle>
+  </mat-button-toggle-group>
   <div class="title-container">
     <div class="tag-line">
       <div class="tag-title">
