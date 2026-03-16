@@ -89,7 +89,9 @@ export class LoaderService {
       this.dataStore.progressStore?.setActivityMap(activityMap);
 
       // Load the progress for each team's activities
-      let teamProgress: TeamProgressFile = await this.loadTeamProgress(this.dataStore.meta) || { progress: {} };
+      let teamProgress: TeamProgressFile = (await this.loadTeamProgress(this.dataStore.meta)) || {
+        progress: {},
+      };
       this.dataStore.addProgressData(teamProgress.progress || {});
       let browserProgress: TeamProgressFile | null =
         this.dataStore.progressStore?.retrieveStoredTeamProgress() || null;
