@@ -88,13 +88,15 @@
 }
 
 .reset-button {
-  background-color: #66bb6a;
+  background-color: var(--primary-color);
+  color: white;
   display: block;
   margin: 0 20px;
   padding: 7px 12px;
   border-radius: 16px;
   font: 500 14px / 20px Roboto, 'Helvetica Neue', sans-serif;
   cursor: pointer;
+  border: none;
 }
 
 .reset-button:hover {

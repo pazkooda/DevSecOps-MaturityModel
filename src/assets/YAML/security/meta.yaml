@@ -21,9 +21,9 @@ progressDefinition:
 
 
 teams: 
-  $ref: 'default/teams.yaml#/teams'
+  $ref: '../teams.yaml#/teams'
 teamGroups:
-  $ref: 'default/teams.yaml#/teamGroups'
+  $ref: '../teams.yaml#/teamGroups'
 
 activityFiles:
     # - generated/generated.yaml # Old structure -  No longer used
