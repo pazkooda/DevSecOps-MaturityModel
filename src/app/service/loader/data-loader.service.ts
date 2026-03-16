@@ -30,10 +30,13 @@ export class MissingModelError extends Error {
 
 @Injectable({ providedIn: 'root' })
 export class LoaderService {
-  private metaFile: string;
+  private metaFile: string = '';
+  private metaFileResolve!: () => void;
+  private metaFileReady: Promise<void> = new Promise(resolve => (this.metaFileResolve = resolve));
   private DSOMM_MODEL_URL: string;
   private debug: boolean = false;
   private dataStore: DataStore | null = null;
+  private loading: boolean = false;
 
   constructor(
     private yamlService: YamlService,
@@ -41,16 +44,6 @@ export class LoaderService {
     private notificationService: NotificationService
   ) {
     this.DSOMM_MODEL_URL = this.githubService.getDsommModelUrl() + '/tree/main/generated';
-    this.metaFile = LoaderService.resolveMetaFile();
-  }
-
-  /** Resolve the meta file path synchronously from localStorage + domains config fallback */
-  private static resolveMetaFile(): string {
-    const storedDomain = localStorage.getItem('activeDomainId');
-    if (storedDomain) {
-      return `assets/YAML/${storedDomain}/meta.yaml`;
-    }
-    return 'assets/YAML/security/meta.yaml';
   }
 
   get datastore(): DataStore | null {
@@ -60,11 +53,16 @@ export class LoaderService {
   public setMetaFile(metaFile: string): void {
     if (metaFile !== this.metaFile) {
       this.metaFile = metaFile;
-      this.dataStore = null; // Force reload on next load()
+      if (!this.loading) {
+        this.dataStore = null;
+      }
     }
+    this.metaFileResolve();
   }
 
   public async load(): Promise<DataStore> {
+    await this.metaFileReady;
+
     // Return cached data if available
     if (this.dataStore) {
       return this.dataStore;
@@ -72,6 +70,7 @@ export class LoaderService {
 
     // Initialize a new DataStore and load data
     this.dataStore = new DataStore();
+    this.loading = true;
     try {
       if (this.debug) console.log(`${perfNow()}: ----- Load Service Begin -----`);
 
@@ -103,8 +102,10 @@ export class LoaderService {
 
       console.log(`${perfNow()}: YAML: All YAML files loaded`);
 
+      this.loading = false;
       return this.dataStore;
     } catch (err: any) {
+      this.loading = false;
       if (err instanceof FileNotFoundError) {
         console.error(`${perfNow()}: Missing model file: ${err?.filename || err}`);
         if (err.filename && err.filename.endsWith('model.yaml')) {
@@ -117,6 +118,7 @@ export class LoaderService {
           this.notificationService.notify('Loading error', err.message + ': ' + err.filename);
         }
       } else {
+        console.error('Load error:', err);
         let msg = 'Failed to load data.';
         if (err instanceof TypeError) {
           msg += `\n\nA data file may be empty or malformed. Check that team-progress.yaml and model.yaml contain valid YAML content.`;
