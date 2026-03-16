@@ -9,8 +9,7 @@
     class="domain-select"
     [value]="activeDomainId"
     (selectionChange)="onDomainChange($event.value)"
-    *ngIf="domains.length > 1"
-  >
+    *ngIf="domains.length > 1">
     <mat-option *ngFor="let d of domains" [value]="d.id">{{ d.name }}</mat-option>
   </mat-select>
   <div class="title-container">
