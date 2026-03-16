@@ -56,6 +56,7 @@ export class DomainService {
         this._domains[0];
       this._activeDomain$.next(initial);
       this._loaded = true;
+      localStorage.setItem(STORAGE_KEY, initial.id);
       this.applyTheme(initial);
     }
     return this._activeDomain$.value!;
