@@ -159,6 +159,27 @@ In the corresponding [dimension YAMLs](https://github.com/devsecopsmaturitymodel
 The `|` is yaml syntax to indicate that the evidence spans multiple lines. Markdown 
 syntax can be used. The evidence is currently visible on the activity from the Matrix page.
 
+## Domains
+
+The application supports multiple maturity model domains. Each domain has its own `meta.yaml`, `model.yaml`, teams, and progress data. Domains are configured in `src/assets/YAML/domains.yaml`:
+
+```yaml
+domains:
+  - id: security
+    name: Security
+    metaFile: security/meta.yaml
+    theme: green
+  - id: architecture
+    name: Architecture
+    metaFile: architecture/meta.yaml
+    theme: purple
+defaultDomain: security
+```
+
+Each domain's YAML files live in `src/assets/YAML/{id}/`. The `theme` field controls the UI color scheme. Available themes: `green`, `purple`, `blue`, `teal`, `orange`, `red`, `indigo`, `brown`. If more than 8 domains are needed, themes can be reused.
+
+A domain selector appears in the toolbar when multiple domains are configured. The active domain is persisted in the browser's localStorage.
+
 # Back link
 
 - [OWASP DevSecOps maturity model page](https://dsomm.owasp.org/)

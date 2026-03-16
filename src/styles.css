@@ -1,9 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-  --slider-primary: #66bb6a;  /* Using the same green as your userday table */
+  --slider-primary: #4caf50;
   --slider-track: #e0e0e0;
-  --slider-thumb: #66bb6a;
+  --slider-thumb: #4caf50;
 }
 
 html, body { height: 100%; }
