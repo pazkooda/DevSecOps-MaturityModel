@@ -19,7 +19,6 @@ $light-theme: (
 $custom-dark-theme: (
         background: #2c2c2c,
         text: #e0e0e0,
-        link: #bb86fc,
 );
 
 $custom-typography: mat.define-typography-level(
@@ -77,8 +76,6 @@ $theme-vars: (
 @mixin apply-theme($theme) {
   background-color: map-get($theme, background);
   color: map-get($theme, text);
-  a { color: map-get($theme, link); }
-  a:visited { color: map-get($theme, visited-link); }
 }
 
 // ----------------------------------------------

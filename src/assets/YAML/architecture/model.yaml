@@ -1,15 +1,15 @@
 ---
 meta:
-  version: 0.1.0
-  released: "2026-03-16"
+  version: 0.2.0
+  released: "2026-03-17"
   publisher: https://github.com/devsecopsmaturitymodel/DevSecOps-MaturityModel
 ---
 Resilience:
   Availability:
     Defined recovery objectives:
-      uuid: a0010001-0001-0001-0001-000000000001
-      risk: Restoration priorities unclear during outage.
-      measure: Define RTO and RPO for critical services.
+      uuid: e5c66c26-a842-447a-9de2-c68e1cd7c294
+      risk: Restoration priorities unclear; teams disagree on what to recover first.
+      measure: Define RTO and RPO for each critical service and OT process.
       difficultyOfImplementation: { knowledge: 2, time: 2, resources: 1 }
       usefulness: 4
       level: 1
@@ -17,10 +17,36 @@ Resilience:
       evidence: ""
       comments: ""
       tags: [planning, reliability]
+    Single points of failure inventory:
+      uuid: dfcfd964-7d95-4eee-b9b3-cc5fe4a3cb93
+      risk: Hidden SPOFs cause unexpected cascading outages.
+      measure: Identify and document all single points of failure in IT and OT infrastructure.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 1 }
+      usefulness: 4
+      level: 1
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [planning, inventory]
+    Health check monitoring:
+      uuid: 6c09b809-1126-42f1-bb4c-fe0c220c7e9a
+      dependsOn:
+      - dfcfd964-7d95-4eee-b9b3-cc5fe4a3cb93 # Single points of failure inventory
+      risk: Failures detected only when users or operators report them.
+      measure: Implement active health checks for services and OT controllers.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 2 }
+      usefulness: 4
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [monitoring, reliability]
     Automated failover:
-      uuid: a0010001-0001-0001-0001-000000000002
-      risk: Manual failover extends downtime.
-      measure: Implement automated failover with health checks.
+      uuid: bc7c7a3d-dc91-4b8b-a215-00278964dd5d
+      dependsOn:
+      - 6c09b809-1126-42f1-bb4c-fe0c220c7e9a # Health check monitoring
+      risk: Manual failover extends downtime and depends on operator availability.
+      measure: Implement automated failover with health-check-driven triggers.
       difficultyOfImplementation: { knowledge: 3, time: 3, resources: 2 }
       usefulness: 4
       level: 2
@@ -28,10 +54,12 @@ Resilience:
       evidence: ""
       comments: ""
       tags: [automation, reliability]
-    Multi-region deployment:
-      uuid: a0010001-0001-0001-0001-000000000003
-      risk: Single region failure causes total outage.
-      measure: Deploy services across multiple regions.
+    Multi-region multi-site deployment:
+      uuid: afe0ef3f-00c9-43e9-ac90-d35d5b9905c4
+      dependsOn:
+      - bc7c7a3d-dc91-4b8b-a215-00278964dd5d # Automated failover
+      risk: Single-site failure causes total outage.
+      measure: Deploy services and control systems across multiple sites or regions.
       difficultyOfImplementation: { knowledge: 3, time: 4, resources: 3 }
       usefulness: 4
       level: 3
@@ -39,10 +67,26 @@ Resilience:
       evidence: ""
       comments: ""
       tags: [infrastructure, reliability]
+    Auto-scaling and load shedding:
+      uuid: 7f04e5a9-a3a8-4c1f-84a8-809176de7b83
+      dependsOn:
+      - 6c09b809-1126-42f1-bb4c-fe0c220c7e9a # Health check monitoring
+      risk: Traffic spikes or process surges overwhelm fixed capacity.
+      measure: Implement auto-scaling for IT workloads and load shedding for OT systems under stress.
+      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 3 }
+      usefulness: 3
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [automation, infrastructure]
     Chaos engineering:
-      uuid: a0010001-0001-0001-0001-000000000004
-      risk: Unknown failure modes remain untested.
-      measure: Run chaos experiments to validate resilience.
+      uuid: 3471c62e-a985-4468-869a-e5eedc92ffa6
+      dependsOn:
+      - bc7c7a3d-dc91-4b8b-a215-00278964dd5d # Automated failover
+      - 6c09b809-1126-42f1-bb4c-fe0c220c7e9a # Health check monitoring
+      risk: Unknown failure modes remain untested until real incidents occur.
+      measure: Run controlled chaos experiments to validate resilience assumptions.
       difficultyOfImplementation: { knowledge: 4, time: 3, resources: 3 }
       usefulness: 4
       level: 4
@@ -50,392 +94,409 @@ Resilience:
       evidence: ""
       comments: ""
       tags: [testing, reliability]
+    Continuous availability validation:
+      uuid: 1e26bd11-62ed-41fd-80a1-111e85702e42
+      dependsOn:
+      - e5c66c26-a842-447a-9de2-c68e1cd7c294 # Defined recovery objectives
+      risk: Availability posture degrades silently over time.
+      measure: Continuously measure and validate availability against defined objectives.
+      difficultyOfImplementation: { knowledge: 4, time: 3, resources: 3 }
+      usefulness: 4
+      level: 4
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [monitoring, reliability]
+
   Disaster Recovery:
-    Documented DR plan:
-      uuid: a0010002-0001-0001-0001-000000000001
-      risk: Ad-hoc recovery without a plan.
-      measure: Create and maintain a disaster recovery plan.
+    Documented backup policy:
+      uuid: 3f896718-8df6-4337-8c3f-ed33b51a2d99
+      risk: No agreed backup scope, frequency, or retention; data loss on failure.
+      measure: Define and document backup policy covering IT data and OT configurations.
       difficultyOfImplementation: { knowledge: 2, time: 2, resources: 1 }
-      usefulness: 3
+      usefulness: 4
       level: 1
       isImplemented: false
       evidence: ""
       comments: ""
       tags: [planning, documentation]
-    Regular DR drills:
-      uuid: a0010002-0001-0001-0001-000000000002
-      risk: Untested plans may fail in practice.
-      measure: Conduct DR drills at least annually.
-      difficultyOfImplementation: { knowledge: 2, time: 3, resources: 2 }
-      usefulness: 4
-      level: 2
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [testing, process]
-    Automated DR orchestration:
-      uuid: a0010002-0001-0001-0001-000000000003
-      risk: Manual DR steps are slow and error-prone.
-      measure: Automate DR failover and failback procedures.
-      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 3 }
-      usefulness: 4
-      level: 3
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [automation, reliability]
-    Continuous DR validation:
-      uuid: a0010002-0001-0001-0001-000000000004
-      risk: DR readiness degrades over time.
-      measure: Continuously validate DR readiness in production.
-      difficultyOfImplementation: { knowledge: 4, time: 4, resources: 3 }
-      usefulness: 4
-      level: 4
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [testing, automation]
-Observability:
-  Monitoring:
-    Basic health checks:
-      uuid: a0020001-0001-0001-0001-000000000001
-      risk: Failures go undetected without health checks.
-      measure: Implement health check endpoints for all services.
-      difficultyOfImplementation: { knowledge: 1, time: 1, resources: 1 }
+    Asset and configuration inventory:
+      uuid: aafeb23f-4c7b-4244-b41d-29fffd6a0149
+      risk: Cannot recover what you don't know exists.
+      measure: Maintain inventory of all IT assets, OT devices, and their configurations.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 1 }
       usefulness: 4
       level: 1
       isImplemented: false
       evidence: ""
       comments: ""
-      tags: [monitoring, reliability]
-    Centralized dashboards:
-      uuid: a0020001-0001-0001-0001-000000000002
-      risk: Scattered metrics slow down incident response.
-      measure: Aggregate metrics into centralized dashboards.
-      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 2 }
-      usefulness: 3
-      level: 2
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [monitoring, tooling]
-    Distributed tracing:
-      uuid: a0020001-0001-0001-0001-000000000003
-      risk: Cannot trace requests across services.
-      measure: Implement distributed tracing across all services.
-      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 2 }
-      usefulness: 4
-      level: 3
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [monitoring, tooling]
-    Anomaly detection:
-      uuid: a0020001-0001-0001-0001-000000000004
-      risk: Subtle degradations go unnoticed.
-      measure: Deploy ML-based anomaly detection on metrics.
-      difficultyOfImplementation: { knowledge: 4, time: 3, resources: 3 }
-      usefulness: 3
-      level: 4
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [monitoring, automation]
-  Alerting:
-    Threshold-based alerts:
-      uuid: a0020002-0001-0001-0001-000000000001
-      risk: Issues not escalated without alerting.
-      measure: Configure threshold-based alerts for key metrics.
-      difficultyOfImplementation: { knowledge: 2, time: 1, resources: 1 }
-      usefulness: 4
-      level: 1
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [monitoring, process]
-    On-call rotation:
-      uuid: a0020002-0001-0001-0001-000000000002
-      risk: No clear ownership during incidents.
-      measure: Establish on-call rotation with escalation paths.
-      difficultyOfImplementation: { knowledge: 1, time: 2, resources: 2 }
-      usefulness: 3
-      level: 2
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [process, culture]
-    SLO-based alerting:
-      uuid: a0020002-0001-0001-0001-000000000003
-      risk: Too many alerts cause fatigue.
-      measure: Alert on SLO burn rate instead of raw thresholds.
-      difficultyOfImplementation: { knowledge: 3, time: 2, resources: 2 }
-      usefulness: 4
-      level: 3
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [monitoring, reliability]
-    Self-healing automation:
-      uuid: a0020002-0001-0001-0001-000000000004
-      risk: Human response is too slow for some failures.
-      measure: Implement automated remediation for known failure patterns.
-      difficultyOfImplementation: { knowledge: 4, time: 4, resources: 3 }
-      usefulness: 4
-      level: 4
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [automation, reliability]
-Scalability:
-  Horizontal Scaling:
-    Stateless service design:
-      uuid: a0030001-0001-0001-0001-000000000001
-      risk: Stateful services block horizontal scaling.
-      measure: Design services to be stateless.
-      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 1 }
-      usefulness: 4
-      level: 1
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [design, infrastructure]
-    Auto-scaling policies:
-      uuid: a0030001-0001-0001-0001-000000000002
-      risk: Manual scaling cannot react to traffic spikes.
-      measure: Define auto-scaling policies based on load metrics.
+      tags: [inventory, documentation]
+    Automated backups:
+      uuid: d1644127-075f-4d0b-a4bc-828c4469e279
+      dependsOn:
+      - 3f896718-8df6-4337-8c3f-ed33b51a2d99 # Documented backup policy
+      - aafeb23f-4c7b-4244-b41d-29fffd6a0149 # Asset and configuration inventory
+      risk: Manual backups are skipped or inconsistent.
+      measure: Automate backup execution for databases, configs, and OT device state.
       difficultyOfImplementation: { knowledge: 2, time: 2, resources: 2 }
       usefulness: 4
       level: 2
       isImplemented: false
       evidence: ""
       comments: ""
-      tags: [automation, infrastructure]
-    Predictive scaling:
-      uuid: a0030001-0001-0001-0001-000000000003
-      risk: Reactive scaling is too slow for traffic bursts.
-      measure: Use predictive scaling based on historical patterns.
-      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 3 }
-      usefulness: 3
-      level: 3
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [automation, infrastructure]
-    Global load balancing:
-      uuid: a0030001-0001-0001-0001-000000000004
-      risk: Regional load balancing limits global reach.
-      measure: Implement global load balancing across regions.
-      difficultyOfImplementation: { knowledge: 4, time: 4, resources: 4 }
-      usefulness: 3
-      level: 4
+      tags: [automation, reliability]
+    Off-site backup storage:
+      uuid: c24c9e09-9350-4f07-a865-b16265ec0622
+      dependsOn:
+      - d1644127-075f-4d0b-a4bc-828c4469e279 # Automated backups
+      risk: Co-located backups destroyed by same event as primary.
+      measure: Store backups off-site or on an isolated network segment.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 2 }
+      usefulness: 4
+      level: 2
       isImplemented: false
       evidence: ""
       comments: ""
       tags: [infrastructure, reliability]
-  Data Partitioning:
-    Database sharding strategy:
-      uuid: a0030002-0001-0001-0001-000000000001
-      risk: Single database becomes a bottleneck.
-      measure: Define a sharding or partitioning strategy.
+    Automated recovery testing:
+      uuid: ac3c4d65-4f83-4b80-9ef4-ca019f7b9686
+      dependsOn:
+      - d1644127-075f-4d0b-a4bc-828c4469e279 # Automated backups
+      risk: Backups exist but restoration has never been verified.
+      measure: Automatically test restore procedures on a regular schedule.
       difficultyOfImplementation: { knowledge: 3, time: 3, resources: 2 }
-      usefulness: 3
-      level: 1
+      usefulness: 4
+      level: 3
       isImplemented: false
       evidence: ""
       comments: ""
-      tags: [design, data]
-    Read replicas:
-      uuid: a0030002-0001-0001-0001-000000000002
-      risk: Read-heavy workloads overload primary database.
-      measure: Deploy read replicas for read-heavy workloads.
-      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 2 }
-      usefulness: 3
-      level: 2
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [infrastructure, data]
-    Event-driven data sync:
-      uuid: a0030002-0001-0001-0001-000000000003
-      risk: Synchronous replication limits throughput.
-      measure: Use event-driven patterns for cross-partition data sync.
+      tags: [testing, automation]
+    Cross-site replication:
+      uuid: 709b35ae-5dac-49f7-9d14-45af9f747b02
+      dependsOn:
+      - c24c9e09-9350-4f07-a865-b16265ec0622 # Off-site backup storage
+      risk: Recovery from off-site backups is too slow to meet RTO.
+      measure: Replicate critical data and configs to a secondary site in near-real-time.
       difficultyOfImplementation: { knowledge: 3, time: 3, resources: 3 }
-      usefulness: 3
+      usefulness: 4
       level: 3
       isImplemented: false
       evidence: ""
       comments: ""
-      tags: [design, data]
-    Multi-model data stores:
-      uuid: a0030002-0001-0001-0001-000000000004
-      risk: One data model does not fit all access patterns.
-      measure: Use polyglot persistence with purpose-fit data stores.
-      difficultyOfImplementation: { knowledge: 4, time: 4, resources: 3 }
-      usefulness: 3
+      tags: [infrastructure, reliability]
+    Full DR rehearsal on schedule:
+      uuid: b4371e6b-f1e4-4f67-8052-20396ceeb0b4
+      dependsOn:
+      - ac3c4d65-4f83-4b80-9ef4-ca019f7b9686 # Automated recovery testing
+      risk: DR plan looks good on paper but fails under real conditions.
+      measure: Execute full end-to-end DR rehearsals including OT systems on a defined schedule.
+      difficultyOfImplementation: { knowledge: 3, time: 4, resources: 3 }
+      usefulness: 4
       level: 4
       isImplemented: false
       evidence: ""
       comments: ""
-      tags: [design, data]
-Modularity:
-  Service Boundaries:
-    Defined bounded contexts:
-      uuid: a0040001-0001-0001-0001-000000000001
-      risk: Unclear boundaries lead to tight coupling.
-      measure: Define bounded contexts for each service.
-      difficultyOfImplementation: { knowledge: 3, time: 2, resources: 1 }
+      tags: [testing, process]
+    Recovery time benchmarking:
+      uuid: fccaa0fc-cf2b-4799-8360-0291738ab166
+      dependsOn:
+      - e5c66c26-a842-447a-9de2-c68e1cd7c294 # Defined recovery objectives
+      - b4371e6b-f1e4-4f67-8052-20396ceeb0b4 # Full DR rehearsal on schedule
+      risk: Actual recovery time unknown until a real disaster.
+      measure: Benchmark and continuously optimize recovery times against RTO targets.
+      difficultyOfImplementation: { knowledge: 4, time: 3, resources: 3 }
       usefulness: 4
-      level: 1
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [design, planning]
-    API contracts:
-      uuid: a0040001-0001-0001-0001-000000000002
-      risk: Breaking changes disrupt consumers.
-      measure: Publish versioned API contracts for all services.
-      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 1 }
-      usefulness: 4
-      level: 2
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [design, documentation]
-    Contract testing:
-      uuid: a0040001-0001-0001-0001-000000000003
-      risk: Contract violations detected too late.
-      measure: Implement consumer-driven contract testing.
-      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 2 }
-      usefulness: 4
-      level: 3
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [testing, design]
-    # Level 4 intentionally missing — grayed out
-  Dependency Management:
-    Dependency inventory:
-      uuid: a0040002-0001-0001-0001-000000000001
-      risk: Unknown dependencies cause cascading failures.
-      measure: Maintain an inventory of service dependencies.
-      difficultyOfImplementation: { knowledge: 1, time: 1, resources: 1 }
-      usefulness: 3
-      level: 1
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [documentation, planning]
-    Circuit breakers:
-      uuid: a0040002-0001-0001-0001-000000000002
-      risk: Failures propagate across services.
-      measure: Implement circuit breakers for inter-service calls.
-      difficultyOfImplementation: { knowledge: 3, time: 2, resources: 2 }
-      usefulness: 4
-      level: 2
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [design, reliability]
-    Bulkhead isolation:
-      uuid: a0040002-0001-0001-0001-000000000003
-      risk: One failing dependency exhausts shared resources.
-      measure: Isolate dependencies using bulkhead patterns.
-      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 2 }
-      usefulness: 4
-      level: 3
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [design, reliability]
-    Service mesh:
-      uuid: a0040002-0001-0001-0001-000000000004
-      risk: Cross-cutting concerns duplicated in each service.
-      measure: Deploy a service mesh for traffic management.
-      difficultyOfImplementation: { knowledge: 4, time: 4, resources: 3 }
-      usefulness: 3
       level: 4
       isImplemented: false
       evidence: ""
       comments: ""
-      tags: [infrastructure, tooling]
-Compliance:
-  Standards:
-    Regulatory mapping:
-      uuid: a0050001-0001-0001-0001-000000000001
-      risk: Non-compliance with regulations.
-      measure: Map architecture decisions to regulatory requirements.
+      tags: [testing, optimization]
+
+  Degraded Mode Operation:
+    Identified critical functions:
+      uuid: 56a7337a-aea5-49b9-9375-f13b1fe3af8b
+      risk: Everything treated as equally important; nothing is prioritized during failure.
+      measure: Identify and rank critical business and process functions for IT and OT.
       difficultyOfImplementation: { knowledge: 2, time: 2, resources: 1 }
-      usefulness: 3
+      usefulness: 4
       level: 1
       isImplemented: false
       evidence: ""
       comments: ""
-      tags: [planning, documentation]
-    Architecture decision records:
-      uuid: a0050001-0001-0001-0001-000000000002
-      risk: Decisions are lost without documentation.
-      measure: Maintain ADRs for significant architecture decisions.
-      difficultyOfImplementation: { knowledge: 1, time: 1, resources: 1 }
+      tags: [planning, prioritization]
+    Manual fallback procedures:
+      uuid: 9c1a28a3-7849-4398-ad6c-8553506af126
+      dependsOn:
+      - 56a7337a-aea5-49b9-9375-f13b1fe3af8b # Identified critical functions
+      risk: Operators have no guidance when automated systems fail.
+      measure: Document manual fallback procedures for each critical function.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 1 }
       usefulness: 4
       level: 2
       isImplemented: false
       evidence: ""
       comments: ""
       tags: [documentation, process]
-    # Level 3 intentionally missing — grayed out
-    Compliance as code:
-      uuid: a0050001-0001-0001-0001-000000000004
-      risk: Manual compliance checks are slow and inconsistent.
-      measure: Encode compliance rules as automated policy checks.
-      difficultyOfImplementation: { knowledge: 4, time: 3, resources: 2 }
-      usefulness: 4
-      level: 4
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [automation, tooling]
-  Audit:
-    Audit trail for changes:
-      uuid: a0050002-0001-0001-0001-000000000001
-      risk: Changes cannot be traced back.
-      measure: Log all infrastructure and config changes.
-      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 2 }
-      usefulness: 3
-      level: 1
-      isImplemented: false
-      evidence: ""
-      comments: ""
-      tags: [monitoring, documentation]
-    Periodic architecture review:
-      uuid: a0050002-0001-0001-0001-000000000002
-      risk: Architecture drifts from intended design.
-      measure: Conduct periodic architecture reviews.
+    Dependency failure impact mapping:
+      uuid: 133c54d4-2844-4d1f-9d9c-dae5a873efa1
+      dependsOn:
+      - 56a7337a-aea5-49b9-9375-f13b1fe3af8b # Identified critical functions
+      risk: Upstream failure effects on downstream systems are unknown.
+      measure: Map dependencies and their failure impact across IT services and OT processes.
       difficultyOfImplementation: { knowledge: 2, time: 3, resources: 1 }
       usefulness: 3
       level: 2
       isImplemented: false
       evidence: ""
       comments: ""
-      tags: [process, planning]
-    Automated drift detection:
-      uuid: a0050002-0001-0001-0001-000000000003
-      risk: Manual reviews miss configuration drift.
-      measure: Detect infrastructure drift automatically.
-      difficultyOfImplementation: { knowledge: 3, time: 2, resources: 2 }
+      tags: [planning, dependencies]
+    Automated graceful degradation:
+      uuid: b0000272-e06c-4ede-915e-097213e51a0a
+      dependsOn:
+      - 9c1a28a3-7849-4398-ad6c-8553506af126 # Manual fallback procedures
+      - 133c54d4-2844-4d1f-9d9c-dae5a873efa1 # Dependency failure impact mapping
+      risk: Systems crash entirely instead of shedding non-critical load.
+      measure: Implement circuit breakers, feature flags, or OT safe-state transitions.
+      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 2 }
       usefulness: 4
       level: 3
       isImplemented: false
       evidence: ""
       comments: ""
-      tags: [automation, monitoring]
-    Continuous compliance monitoring:
-      uuid: a0050002-0001-0001-0001-000000000004
-      risk: Point-in-time audits miss ongoing violations.
-      measure: Monitor compliance continuously in production.
+      tags: [automation, reliability]
+    Local autonomous operation:
+      uuid: 4693206e-e81e-49d0-a14e-ac84fa32aad2
+      dependsOn:
+      - 9c1a28a3-7849-4398-ad6c-8553506af126 # Manual fallback procedures
+      risk: Loss of central control or network leaves remote sites inoperable.
+      measure: Enable local/autonomous operation when connectivity to central systems is lost.
+      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 3 }
+      usefulness: 4
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [infrastructure, OT]
+    Self-healing systems:
+      uuid: c2bdd2ce-e963-4186-9d6f-a77f83dbc372
+      dependsOn:
+      - b0000272-e06c-4ede-915e-097213e51a0a # Automated graceful degradation
+      risk: Degraded state persists until manual intervention.
+      measure: Implement self-healing that detects degradation and restores normal operation automatically.
+      difficultyOfImplementation: { knowledge: 4, time: 4, resources: 3 }
+      usefulness: 4
+      level: 4
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [automation, reliability]
+    Continuous degradation simulation:
+      uuid: e3fa60ff-4048-49eb-9086-61b71b4cf9af
+      dependsOn:
+      - b0000272-e06c-4ede-915e-097213e51a0a # Automated graceful degradation
+      risk: Degraded mode paths are untested and may not work when needed.
+      measure: Regularly simulate partial failures to validate degraded mode behavior.
       difficultyOfImplementation: { knowledge: 4, time: 3, resources: 3 }
       usefulness: 4
       level: 4
       isImplemented: false
       evidence: ""
       comments: ""
+      tags: [testing, reliability]
+
+  Incident Response:
+    Incident response plan:
+      uuid: c282e240-4914-4105-9e5e-423334f5b71a
+      risk: No structured approach; incidents handled ad-hoc.
+      measure: Create an incident response plan covering IT and OT scenarios.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 1 }
+      usefulness: 4
+      level: 1
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [planning, process]
+    Communication plan:
+      uuid: 85989dba-66c2-403b-8b70-a6f8b81634ca
+      risk: Stakeholders uninformed during incidents; conflicting messages.
+      measure: Define internal and external communication procedures for incidents.
+      difficultyOfImplementation: { knowledge: 1, time: 2, resources: 1 }
+      usefulness: 3
+      level: 1
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [process, communication]
+    Escalation paths and roles:
+      uuid: 8420ab17-f84d-4529-affa-70b1bfa06de8
+      dependsOn:
+      - c282e240-4914-4105-9e5e-423334f5b71a # Incident response plan
+      risk: Unclear ownership delays response.
+      measure: Define escalation paths, on-call roles, and decision authority.
+      difficultyOfImplementation: { knowledge: 1, time: 2, resources: 1 }
+      usefulness: 4
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [process, roles]
+    Incident classification:
+      uuid: 665522fc-9ea6-4f88-ae94-9bd603933ac0
+      dependsOn:
+      - c282e240-4914-4105-9e5e-423334f5b71a # Incident response plan
+      risk: All incidents treated with same urgency; critical ones delayed.
+      measure: Classify incidents by severity and impact to prioritize response.
+      difficultyOfImplementation: { knowledge: 2, time: 1, resources: 1 }
+      usefulness: 3
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [process, prioritization]
+    Automated detection and alerting:
+      uuid: efc35c03-4713-4507-a185-ae499632b84c
+      dependsOn:
+      - 6c09b809-1126-42f1-bb4c-fe0c220c7e9a # Health check monitoring
+      risk: Incidents discovered late through manual observation.
+      measure: Deploy automated detection and alerting for IT services and OT anomalies.
+      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 2 }
+      usefulness: 4
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
       tags: [automation, monitoring]
+    Regular tabletop exercises:
+      uuid: 2c5c7187-ff15-4f8f-b119-66af19035e7a
+      dependsOn:
+      - 8420ab17-f84d-4529-affa-70b1bfa06de8 # Escalation paths and roles
+      - 665522fc-9ea6-4f88-ae94-9bd603933ac0 # Incident classification
+      risk: Response team unprepared for real incidents.
+      measure: Conduct tabletop exercises covering IT and OT incident scenarios.
+      difficultyOfImplementation: { knowledge: 2, time: 3, resources: 2 }
+      usefulness: 4
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [testing, process]
+    Automated containment and remediation:
+      uuid: a1a92f75-ede0-4dd0-a601-cbb22314b1f6
+      dependsOn:
+      - efc35c03-4713-4507-a185-ae499632b84c # Automated detection and alerting
+      - 665522fc-9ea6-4f88-ae94-9bd603933ac0 # Incident classification
+      risk: Human response too slow for fast-spreading incidents.
+      measure: Automate containment actions and known remediation playbooks.
+      difficultyOfImplementation: { knowledge: 4, time: 4, resources: 3 }
+      usefulness: 4
+      level: 4
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [automation, reliability]
+    Post-incident feedback loop:
+      uuid: 3705d0cc-dc96-4b38-9b80-fc605e4b3d14
+      dependsOn:
+      - c282e240-4914-4105-9e5e-423334f5b71a # Incident response plan
+      risk: Same incidents recur because lessons are not applied.
+      measure: Feed post-incident findings back into resilience measures and runbooks.
+      difficultyOfImplementation: { knowledge: 3, time: 2, resources: 1 }
+      usefulness: 4
+      level: 4
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [process, improvement]
+
+  Change Resilience:
+    Change management process:
+      uuid: 26001354-5b5e-4b18-8e9c-9dec9a239ecc
+      risk: Uncontrolled changes cause outages.
+      measure: Define a change management process for IT deployments and OT firmware/config updates.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 1 }
+      usefulness: 4
+      level: 1
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [process, governance]
+    Change risk assessment:
+      uuid: 4477f7d8-4b34-468a-bc1e-3ceb188be84f
+      dependsOn:
+      - 26001354-5b5e-4b18-8e9c-9dec9a239ecc # Change management process
+      risk: High-risk changes deployed without extra scrutiny.
+      measure: Assess risk of each change and apply appropriate approval and testing gates.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 1 }
+      usefulness: 3
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [process, governance]
+    Rollback procedures tested:
+      uuid: 125c2e02-4a91-405e-8ccb-a40fdeea1915
+      dependsOn:
+      - 26001354-5b5e-4b18-8e9c-9dec9a239ecc # Change management process
+      risk: Failed change cannot be reversed; extended outage.
+      measure: Document and test rollback procedures for every change type.
+      difficultyOfImplementation: { knowledge: 2, time: 2, resources: 2 }
+      usefulness: 4
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [testing, process]
+    Pre-change validation in staging:
+      uuid: 9950c330-8323-44e5-b9c0-61763b829f84
+      dependsOn:
+      - 26001354-5b5e-4b18-8e9c-9dec9a239ecc # Change management process
+      risk: Changes tested only in production.
+      measure: Validate changes in a staging environment or OT test bench before production.
+      difficultyOfImplementation: { knowledge: 2, time: 3, resources: 2 }
+      usefulness: 4
+      level: 2
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [testing, infrastructure]
+    Canary and staged rollout:
+      uuid: 98875c07-da1a-4674-a0f8-1b2e6ff39c49
+      dependsOn:
+      - 9950c330-8323-44e5-b9c0-61763b829f84 # Pre-change validation in staging
+      - 800e3602-224b-47c2-95af-deffdfd2f9d0 # Change impact monitoring
+      risk: Bad change impacts all systems simultaneously.
+      measure: Roll out changes incrementally to a subset before full deployment.
+      difficultyOfImplementation: { knowledge: 3, time: 3, resources: 2 }
+      usefulness: 4
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [automation, deployment]
+    Change impact monitoring:
+      uuid: 800e3602-224b-47c2-95af-deffdfd2f9d0
+      dependsOn:
+      - 6c09b809-1126-42f1-bb4c-fe0c220c7e9a # Health check monitoring
+      risk: Negative impact of a change detected too late.
+      measure: Monitor key metrics in real-time during and after change deployment.
+      difficultyOfImplementation: { knowledge: 3, time: 2, resources: 2 }
+      usefulness: 4
+      level: 3
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [monitoring, deployment]
+    Continuous deployment with automatic rollback:
+      uuid: 0f3c3d31-4894-4888-8935-7b9e0cb495ff
+      dependsOn:
+      - 98875c07-da1a-4674-a0f8-1b2e6ff39c49 # Canary and staged rollout
+      - 125c2e02-4a91-405e-8ccb-a40fdeea1915 # Rollback procedures tested
+      risk: Manual deployment and rollback cycles are slow and error-prone.
+      measure: Implement continuous deployment pipelines that automatically roll back on failure signals.
+      difficultyOfImplementation: { knowledge: 4, time: 4, resources: 3 }
+      usefulness: 4
+      level: 4
+      isImplemented: false
+      evidence: ""
+      comments: ""
+      tags: [automation, deployment]
